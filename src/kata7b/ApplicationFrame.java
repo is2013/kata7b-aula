@@ -1,0 +1,81 @@
+package kata7b;
+
+import java.awt.BorderLayout;
+import java.awt.HeadlessException;
+import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class ApplicationFrame extends JFrame {
+
+    private static final String ROOT = "C:\\Users\\Public\\Pictures\\Sample Pictures";
+    private String[] images = {"desert.jpg", "jellyfish.jpg", "koala.jpg", "penguins.jpg"};
+    private int imageIndex = 0;
+    private ImagePanel imagePanel;
+    
+    public ApplicationFrame() throws HeadlessException {
+        super("Image viewer");
+        this.setSize(1024, 800);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.createComponents();
+        drawNextImage();
+        this.setVisible(true);
+    }
+
+    private void createComponents() {
+        this.add(createImagePanel());
+        this.add(createToolbar(), BorderLayout.SOUTH);
+    }
+
+    private JPanel createToolbar() {
+        JPanel panel = new JPanel();
+        panel.add(createPrevButton());
+        panel.add(createNextButton());
+        return panel;
+    }
+
+    private JButton createNextButton() {
+        JButton button = new JButton("Next");
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                drawNextImage();
+            }
+
+        });
+        return button;
+    }
+
+    private void drawNextImage() {
+        imagePanel.setImage(ROOT + "/" + images[imageIndex]);
+        imageIndex = (imageIndex + 1) % images.length;
+    }
+    
+    private void drawPrevImage() {
+        imagePanel.setImage(ROOT + "/" + images[imageIndex]);
+        imageIndex = (imageIndex - 1 + images.length) % images.length;
+    }
+
+    private JButton createPrevButton() {
+        JButton button = new JButton("Prev");
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                drawPrevImage();
+            }
+        });
+        return button;
+    }
+
+    private JPanel createImagePanel() {
+        imagePanel = new ImagePanel();
+        return imagePanel;
+    }
+
+}
