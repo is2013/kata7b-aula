@@ -13,7 +13,7 @@ public class ApplicationFrame extends JFrame {
 
     private static final String ROOT = "C:\\Users\\Public\\Pictures\\Sample Pictures";
     private String[] images = {"desert.jpg", "jellyfish.jpg", "koala.jpg", "penguins.jpg"};
-    private int imageIndex = 0;
+    private int imageIndex = -1;
     private ImagePanel imagePanel;
     
     public ApplicationFrame() throws HeadlessException {
@@ -51,14 +51,18 @@ public class ApplicationFrame extends JFrame {
         return button;
     }
 
+    private void setCurrentImage(int index){
+        imagePanel.setImage(ImageLoader.load(ROOT + "/" + images[index]));
+    }
+    
     private void drawNextImage() {
-        imagePanel.setImage(ROOT + "/" + images[imageIndex]);
         imageIndex = (imageIndex + 1) % images.length;
+        setCurrentImage(imageIndex);
     }
     
     private void drawPrevImage() {
-        imagePanel.setImage(ROOT + "/" + images[imageIndex]);
         imageIndex = (imageIndex - 1 + images.length) % images.length;
+        setCurrentImage(imageIndex);
     }
 
     private JButton createPrevButton() {
